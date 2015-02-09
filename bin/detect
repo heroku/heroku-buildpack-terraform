@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -f $1/.terraform_url ]; then
-    echo "PackerBinaries"
+    echo "TerraformBinaries"
     exit 0
 else
     exit 1

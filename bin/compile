@@ -17,12 +17,15 @@ if [ $STACK == "cedar" ]; then
   UNZIP_COMMAND="jar xf"
 fi
 
-cd $1
-
 while read url; do
   if [ -n "$url" ]; then
+    mkdir -p "$1/bin"
     echo Vendoring $url | indent
-    curl -L --silent $url > $1/bin/terraform.zip
+    curl -L "$url" -o "$1/bin/terraform.zip"
+    if [ $? -ne 0 ]; then
+        >&2 echo "Couldn't download $url" 
+        exit 1
+    fi
     cd $1/bin && $UNZIP_COMMAND terraform.zip && rm terraform.zip
   fi
-done < .terraform_url
+done < $1/.terraform_url
